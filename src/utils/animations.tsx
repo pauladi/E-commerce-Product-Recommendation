@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 type TransitionProps = {
   show: boolean;
@@ -44,7 +44,7 @@ export const FadeIn = ({
 
 export const useInView = (threshold = 0.1): [React.RefObject<HTMLDivElement>, boolean] => {
   const [isInView, setIsInView] = useState(false);
-  const ref = React.createRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
