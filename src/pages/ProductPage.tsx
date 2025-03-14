@@ -1,20 +1,18 @@
 
 import React from 'react';
-import HeroSection from '@/components/HeroSection';
-import RecommendationSection from '@/components/RecommendationSection';
+import ProductDetail from '@/components/ProductDetail';
 import Navbar from '@/components/Navbar';
 import { ProductProvider } from '@/contexts/ProductContext';
 
-const Index: React.FC = () => {
+const ProductPage: React.FC = () => {
   return (
     <ProductProvider>
       <div className="min-h-screen">
         <Navbar />
-        <HeroSection />
-        <RecommendationSection />
+        <ProductDetail />
       </div>
     </ProductProvider>
   );
 };
 
-export default Index;
+export default ProductPage;
