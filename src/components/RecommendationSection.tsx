@@ -2,10 +2,15 @@
 import React, { useEffect } from 'react';
 import { useProducts } from '@/contexts/ProductContext';
 import ProductCard from './ProductCard';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Eye } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const RecommendationSection: React.FC = () => {
   const { recommendations, loading, refreshRecommendations } = useProducts();
+  const location = useLocation();
+  
+  // Check if we're on a product page
+  const isProductPage = location.pathname.includes('/product/');
   
   // Initial load of recommendations
   useEffect(() => {
@@ -43,7 +48,7 @@ const RecommendationSection: React.FC = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <span className="text-sm font-medium text-muted-foreground block mb-1">
-              Based on your browsing
+              {isProductPage ? "You might also like" : "Based on your browsing"}
             </span>
             <h2 className="text-2xl font-medium">Recommended for you</h2>
           </div>
@@ -59,7 +64,6 @@ const RecommendationSection: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {/* Using all available recommendations instead of limiting */}
           {recommendations.map((product, index) => (
             <ProductCard 
               key={product.id} 
