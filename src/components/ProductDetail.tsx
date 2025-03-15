@@ -1,12 +1,11 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useProducts } from '@/contexts/ProductContext';
 import { Product } from '@/services/productService';
 import { Star, ArrowLeft, ShoppingBag, Heart } from 'lucide-react';
-import RecommendationSection from './RecommendationSection';
 import { useImageLoad } from '@/utils/animations';
 import { toast } from '@/components/ui/use-toast';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -56,9 +55,51 @@ const ProductDetail: React.FC = () => {
   
   if (loading) {
     return (
-      <div className="min-h-screen pt-20 flex items-center justify-center">
-        <div className="animate-pulse-subtle">Loading product details...</div>
-      </div>
+      <main className="min-h-screen pt-20 pb-16 animate-fade-in">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <button 
+            onClick={handleGoBack}
+            className="flex items-center text-sm mb-6 hover:text-primary/80 transition-colors"
+            aria-label="Go back"
+          >
+            <ArrowLeft size={16} className="mr-1" />
+            Back
+          </button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {/* Product Image Skeleton */}
+            <Skeleton className="aspect-square rounded-xl" />
+            
+            {/* Product Info Skeleton */}
+            <div className="flex flex-col">
+              <div className="mb-6">
+                <Skeleton className="h-4 w-24 mb-1" />
+                <Skeleton className="h-8 w-2/3 mb-4" />
+                
+                <div className="flex items-center gap-2 mb-4">
+                  <Skeleton className="h-4 w-20" />
+                </div>
+                
+                <Skeleton className="h-6 w-24 mb-6" />
+                
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-3/4 mb-8" />
+              </div>
+              
+              {/* Quantity selector skeleton */}
+              <Skeleton className="h-6 w-16 mb-2" />
+              <Skeleton className="h-10 w-32 mb-6" />
+              
+              {/* Action buttons skeleton */}
+              <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                <Skeleton className="h-10 flex-1" />
+                <Skeleton className="h-10 w-20" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     );
   }
   
@@ -195,11 +236,6 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Recommendations */}
-      <div className="mt-20">
-        <RecommendationSection />
       </div>
     </main>
   );
