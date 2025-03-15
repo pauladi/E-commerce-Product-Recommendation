@@ -11,7 +11,9 @@ const ProductPage: React.FC = () => {
       <div className="min-h-screen">
         <Navbar />
         <ProductDetail />
-        <RecommendationSection />
+        <div className="mt-20">
+          <RecommendationSection />
+        </div>
       </div>
     </ProductProvider>
   );
