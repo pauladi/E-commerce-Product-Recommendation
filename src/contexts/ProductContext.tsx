@@ -34,7 +34,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const [allProducts, featured, recommended] = await Promise.all([
           ProductService.getProducts(),
           ProductService.getFeaturedProducts(),
-          ProductService.getRecommendations()
+          ProductService.getMoreRecommendations(8) // Changed to getMoreRecommendations with count parameter
         ]);
         
         setProducts(allProducts);
@@ -87,7 +87,7 @@ export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ child
   
   const refreshRecommendations = async (): Promise<void> => {
     try {
-      const newRecommendations = await ProductService.getRecommendations();
+      const newRecommendations = await ProductService.getMoreRecommendations(8); // Changed to getMoreRecommendations with count parameter
       setRecommendations(newRecommendations);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';

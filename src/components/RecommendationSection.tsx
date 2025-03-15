@@ -24,7 +24,7 @@ const RecommendationSection: React.FC = () => {
             <h2 className="text-2xl font-medium">Loading recommendations...</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <div key={i} className="aspect-[4/5] bg-secondary animate-pulse rounded-lg"></div>
             ))}
           </div>
@@ -59,6 +59,7 @@ const RecommendationSection: React.FC = () => {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {/* Using all available recommendations instead of limiting */}
           {recommendations.map((product, index) => (
             <ProductCard 
               key={product.id} 

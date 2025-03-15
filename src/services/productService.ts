@@ -153,8 +153,13 @@ export class ProductService {
     }
   }
   
-  // Get recommendations based on browsing history
+  // Get recommendations based on browsing history (original method kept for compatibility)
   static async getRecommendations(): Promise<Product[]> {
+    return this.getMoreRecommendations(4); // Default to 4 for backward compatibility
+  }
+
+  // New method to get more recommendations with count parameter
+  static async getMoreRecommendations(count: number = 8): Promise<Product[]> {
     // Load browsing history if not already loaded
     if (userBrowsingHistory.length === 0) {
       this.loadBrowsingHistory();
@@ -164,8 +169,8 @@ export class ProductService {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     if (userBrowsingHistory.length === 0) {
-      // If no browsing history, return featured products
-      return mockProducts.filter(p => p.featured);
+      // If no browsing history, return a mix of products
+      return [...mockProducts].sort(() => Math.random() - 0.5).slice(0, count);
     }
     
     // Get the most recent browsed product
@@ -173,7 +178,7 @@ export class ProductService {
     const lastViewed = mockProducts.find(p => p.id === lastViewedId);
     
     if (!lastViewed) {
-      return mockProducts.slice(0, 4);
+      return mockProducts.slice(0, count);
     }
     
     // Get products in the same category
@@ -181,16 +186,22 @@ export class ProductService {
       p => p.category === lastViewed.category && p.id !== lastViewedId
     );
     
-    // If we have enough in the same category, return those
-    if (sameCategory.length >= 4) {
-      return sameCategory.slice(0, 4);
-    }
-    
-    // Otherwise, add some products from other categories
+    // Get products not in browsing history for variety
     const otherProducts = mockProducts.filter(
       p => p.category !== lastViewed.category && !userBrowsingHistory.includes(p.id)
     );
     
-    return [...sameCategory, ...otherProducts].slice(0, 4);
+    // Combine same category and other products, prioritizing same category
+    const combined = [...sameCategory, ...otherProducts];
+    
+    // If we still don't have enough, just add remaining products
+    if (combined.length < count) {
+      const remainingProducts = mockProducts.filter(
+        p => !combined.find(cp => cp.id === p.id) && p.id !== lastViewedId
+      );
+      combined.push(...remainingProducts);
+    }
+    
+    return combined.slice(0, count);
   }
 }
